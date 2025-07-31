@@ -9,7 +9,6 @@ export function setCookie(name, value, options = {}) {
   const $cookies = getCookiesInstance()
   $cookies.set(name, value, {
     path: '/',
-    expires: '1d', // par défaut 1 jour
     ...options,
   })
 }
