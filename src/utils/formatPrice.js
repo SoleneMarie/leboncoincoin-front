@@ -21,5 +21,5 @@ export function formatPrice(value) {
     }
   }
 
-  return result + ' €'
+  return result
 }

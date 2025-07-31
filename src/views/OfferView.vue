@@ -70,7 +70,7 @@ const prev = () => cycle?.prev()
                 :src="
                   postData.attributes?.owner?.data?.attributes?.avatar?.data?.attributes?.url
                     ? postData.attributes.owner.data.attributes.avatar.data.attributes.url
-                    : '/src/assets/images/placeholder.jpg'
+                    : '/src/assets/images/default-profile.jpg'
                 "
                 alt="avatar"
               />

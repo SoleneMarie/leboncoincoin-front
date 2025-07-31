@@ -7,6 +7,8 @@ import router from './router'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import VueCookies from 'vue-cookies'
+
 import {
   faSearch,
   faUser,
@@ -48,5 +50,7 @@ const userName = ref('')
 app.provide('GlobalStore', { userToken: userToken, userName: userName })
 
 app.use(router)
+app.use(VueCookies, { expires: 60, secure: true })
+
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.mount('#app')

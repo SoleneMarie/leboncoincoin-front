@@ -47,6 +47,7 @@ const handleSubmit = async () => {
     )
 
     Store.userToken.value = response.data.jwt
+
     Store.userName.value = response.data.user.username
     console.log('Réponse serveur :', response.data)
     setTimeout(() => {

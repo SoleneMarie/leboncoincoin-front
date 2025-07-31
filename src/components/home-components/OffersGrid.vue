@@ -15,7 +15,7 @@ defineProps({
             :src="
               offer.attributes.owner?.data?.attributes?.avatar?.data
                 ? offer.attributes.owner.data.attributes.avatar.data.attributes.url
-                : '/src/assets/images/placeholder.jpg'
+                : '/src/assets/images/default-profile.jpeg'
             "
             alt="avatar"
             class="avatar"
