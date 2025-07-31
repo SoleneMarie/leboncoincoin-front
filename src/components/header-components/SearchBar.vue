@@ -1,9 +1,21 @@
 <script setup>
+import { useRouter } from 'vue-router'
+
 const { searchValue } = defineProps({
   searchValue: String,
 })
 
 const emit = defineEmits(['update:searchValue'])
+
+const router = useRouter()
+
+const handleSearchInput = () => {
+  const trimmed = searchValue.trim()
+  router.push({
+    name: 'home',
+    query: trimmed ? { title: trimmed } : {},
+  })
+}
 </script>
 
 <template>
@@ -14,8 +26,9 @@ const emit = defineEmits(['update:searchValue'])
       placeholder="Rechercher sur leboncoin"
       :value="searchValue"
       @input="emit('update:searchValue', $event.target.value)"
+      @keydown.enter="handleSearchInput"
     />
-    <font-awesome-icon :icon="['fas', 'search']" />
+    <font-awesome-icon :icon="['fas', 'search']" @click="handleSearchInput" />
   </div>
 </template>
 

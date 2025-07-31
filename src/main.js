@@ -21,6 +21,7 @@ import {
   faEye,
   faEyeSlash,
   faArrowRight,
+  faArrowLeft,
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as faHeartRegular, faClock } from '@fortawesome/free-regular-svg-icons'
@@ -39,6 +40,7 @@ library.add(
   faEye,
   faEyeSlash,
   faArrowRight,
+  faArrowLeft,
   faSpinner,
 )
 

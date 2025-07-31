@@ -21,6 +21,9 @@ const router = createRouter({
     { path: '/signup', name: 'signup', component: SignUpView },
     { path: '/login', name: 'login', component: LoginView },
   ],
+  scrollBehavior() {
+    return { top: 0 }
+  },
 })
 
 export default router
