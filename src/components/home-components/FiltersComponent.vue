@@ -17,7 +17,7 @@ const applyFilters = () => {
 </script>
 
 <template>
-  <section>
+  <form @submit.prevent="applyFilters">
     <div class="price-limits">
       <h4>Prix</h4>
       <div class="price-limits-inputs">
@@ -51,11 +51,15 @@ const applyFilters = () => {
     <div class="search-button">
       <button @click="applyFilters">Rechercher</button>
     </div>
-  </section>
+  </form>
 </template>
 
 <style scoped>
-section {
+form {
+  padding: 0 10px;
+  margin-bottom: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   width: 100%;
   justify-content: space-between;
