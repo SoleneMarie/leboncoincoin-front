@@ -3,6 +3,7 @@ import { ref, inject } from 'vue'
 import axios from 'axios'
 import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
+import { useCookies } from '@/utils/cookiesHandler'
 
 import InscriptionButton from '@/components/buttons/InscriptionButton.vue'
 
@@ -15,6 +16,7 @@ const errorMessage = ref('')
 const connecting = ref(false)
 
 const router = useRouter()
+const cookies = useCookies()
 
 const Store = inject('GlobalStore')
 if (!Store) {
@@ -55,11 +57,14 @@ const handleSubmit = async () => {
 
     Store.userToken.value = response.data.jwt
     Store.userName.value = response.data.user.username
+    cookies.set('userToken', response.data.jwt)
+    cookies.set('userName', response.data.user.username)
+
     console.log('Réponse serveur :', response.data)
 
     setTimeout(() => {
       router.push('/')
-    }, 3000)
+    }, 2000)
   } catch (error) {
     console.error('Erreur lors de l’inscription :', error)
     errorMessage.value = 'Un problème est survenu, veuillez essayer à nouveau'

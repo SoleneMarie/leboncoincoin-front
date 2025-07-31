@@ -11,6 +11,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      props: (route) => ({
+        title: route.query.title || '',
+        page: parseInt(route.query.page) || 1,
+        pageSize: parseInt(route.query.pageSize) || 10,
+      }),
     },
     { path: '/offer/:id', name: 'offer', component: OfferView, props: true },
     { path: '/signup', name: 'signup', component: SignUpView },
