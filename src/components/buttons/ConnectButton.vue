@@ -94,6 +94,7 @@ const handleLogout = () => {
   cookies.remove('userToken')
   Store.userToken.value = ''
   Store.userName.value = ''
+  Store.userAvatar.value = ''
   userName.value = ''
   userAvatar.value = ''
   token.value = null
