@@ -40,6 +40,10 @@ header {
   background-color: white;
 }
 
+header > section:first-child {
+  margin-bottom: 12px;
+}
+
 section {
   display: flex;
   justify-content: space-between;

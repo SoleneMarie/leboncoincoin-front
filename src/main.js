@@ -23,6 +23,7 @@ import {
   faArrowRight,
   faArrowLeft,
   faSpinner,
+  faCamera,
 } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as faHeartRegular, faClock } from '@fortawesome/free-regular-svg-icons'
 
@@ -42,14 +43,16 @@ library.add(
   faArrowRight,
   faArrowLeft,
   faSpinner,
+  faCamera,
 )
 
 const app = createApp(App)
 
 const userToken = ref('')
 const userName = ref('')
+const userAvatar = ref('')
 
-app.provide('GlobalStore', { userToken: userToken, userName: userName })
+app.provide('GlobalStore', { userToken: userToken, userName: userName, userAvatar: userAvatar })
 
 app.use(router)
 app.use(VueCookies, { expires: 60, secure: true })

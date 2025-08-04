@@ -2,7 +2,7 @@
 import { ref, inject } from 'vue'
 import axios from 'axios'
 import { RouterLink } from 'vue-router'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 import InscriptionButton from '@/components/buttons/InscriptionButton.vue'
 import { useCookies } from '@/utils/cookiesHandler'
@@ -15,6 +15,7 @@ const errorMessage = ref('')
 const connecting = ref(false)
 
 const router = useRouter()
+const route = useRoute()
 const cookies = useCookies()
 
 const Store = inject('GlobalStore')
@@ -47,17 +48,29 @@ const handleSubmit = async () => {
         },
       },
     )
+    const jwt = response.data.jwt
 
-    Store.userToken.value = response.data.jwt
+    Store.userToken.value = jwt
     Store.userName.value = response.data.user.username
+
+    const userDetails = await axios.get(
+      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me?populate=*',
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      },
+    )
+    console.log('userDetails : ', userDetails)
+    const avatar = userDetails.data.avatar.url
+    Store.userAvatar.value = avatar
+    console.log('store :', Store)
+    // Store.userAvatar.value = response.data.user.username
     cookies.set('userToken', response.data.jwt)
-    cookies.set('userName', response.data.user.username)
 
     console.log('Réponse serveur :', response.data)
 
-    setTimeout(() => {
-      router.push('/')
-    }, 2000)
+    router.push({ name: route.query.redirect || 'home' })
   } catch (error) {
     console.error('Erreur lors de la connexion :', error)
     const errMessage = error.response.data.error.message
