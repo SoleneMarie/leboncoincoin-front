@@ -5,6 +5,8 @@ import SignUpView from '@/views/SignUpView.vue'
 import LoginView from '@/views/LoginView.vue'
 import PublishView from '@/views/PublishView.vue'
 import VueCookies from 'vue-cookies'
+import SuccessView from '@/views/SuccessView.vue'
+import CancelView from '@/views/CancelView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +25,8 @@ const router = createRouter({
     { path: '/signup', name: 'signup', component: SignUpView },
     { path: '/login', name: 'login', component: LoginView },
     { path: '/publish', name: 'publish', component: PublishView, meta: { Authenticated: true } },
+    { path: '/success', name: 'success', component: SuccessView },
+    { path: '/cancel', name: 'cancel', component: CancelView },
   ],
   scrollBehavior() {
     return { top: 0 }
