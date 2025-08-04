@@ -4,9 +4,10 @@ import OfferView from '@/views/OfferView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LoginView from '@/views/LoginView.vue'
 import PublishView from '@/views/PublishView.vue'
-import VueCookies from 'vue-cookies'
 import SuccessView from '@/views/SuccessView.vue'
 import CancelView from '@/views/CancelView.vue'
+import PaymentView from '@/views/PaymentView.vue'
+import NotFound from '@/views/NotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,17 +28,18 @@ const router = createRouter({
     { path: '/publish', name: 'publish', component: PublishView, meta: { Authenticated: true } },
     { path: '/success', name: 'success', component: SuccessView },
     { path: '/cancel', name: 'cancel', component: CancelView },
+    {
+      path: '/payment/:id',
+      name: 'payment',
+      component: PaymentView,
+      props: true,
+      meta: { Authenticated: true },
+    },
+    { path: '/:catchAll(.*)', name: 'notFound', component: NotFound },
   ],
   scrollBehavior() {
     return { top: 0 }
   },
-})
-
-router.beforeEach((to) => {
-  const userToken = VueCookies.get('userToken')
-  if (to.meta.Authenticated && !userToken) {
-    return { name: 'login', query: { redirect: to.name } }
-  }
 })
 
 export default router

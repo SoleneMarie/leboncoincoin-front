@@ -1,8 +1,7 @@
 <script setup>
 import { ref, inject } from 'vue'
 import axios from 'axios'
-import { RouterLink } from 'vue-router'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute, RouterLink } from 'vue-router'
 import { useCookies } from '@/utils/cookiesHandler'
 
 import InscriptionButton from '@/components/buttons/InscriptionButton.vue'
@@ -16,6 +15,7 @@ const errorMessage = ref('')
 const connecting = ref(false)
 
 const router = useRouter()
+const route = useRoute()
 const cookies = useCookies()
 
 const Store = inject('GlobalStore')
@@ -24,8 +24,6 @@ if (!Store) {
 }
 
 const handleSubmit = async () => {
-  console.log('submit')
-
   const body = {
     username: name.value,
     email: email.value,
@@ -42,7 +40,6 @@ const handleSubmit = async () => {
     return
   }
 
-  console.log('username : ', name.value, 'email : ', email.value, 'password : ', password.value)
   try {
     connecting.value = true
     const response = await axios.post(
@@ -60,10 +57,9 @@ const handleSubmit = async () => {
     cookies.set('userToken', response.data.jwt)
     cookies.set('userName', response.data.user.username)
 
-    console.log('Réponse serveur :', response.data)
-
     setTimeout(() => {
-      router.push('/')
+      const redirectTo = route.query.redirect || '/'
+      router.push(redirectTo)
     }, 2000)
   } catch (error) {
     console.error('Erreur lors de l’inscription :', error)
@@ -121,7 +117,7 @@ const resetError = () => {
 
         <InscriptionButton
           v-if="connecting"
-          disabled="true"
+          :disabled="true"
           text="Inscription en cours"
           icon="spinner"
         />
@@ -132,7 +128,9 @@ const resetError = () => {
         </div>
         <div class="login-link">
           <p>Vous avez déjà un compte?</p>
-          <RouterLink to="/login">Connectez-vous</RouterLink>
+          <RouterLink :to="{ path: '/login', query: { redirect: route.query.redirect } }"
+            >Connectez-vous</RouterLink
+          >
         </div>
       </form>
     </div>

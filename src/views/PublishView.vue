@@ -68,12 +68,11 @@ const handleSubmit = async () => {
         },
       },
     )
-    console.log('Annonce postée :', response)
     const offerId = response.data.data.id
     isPublishing.value = false
     router.push({ name: 'offer', params: { id: offerId } })
   } catch (error) {
-    console.log("Erreur de publication de l'annonce :", error)
+    console.error("Erreur de publication de l'annonce :", error)
     postError.value = 'Une erreur est survenue, veuillez réessayer'
     isPublishing.value = false
   }

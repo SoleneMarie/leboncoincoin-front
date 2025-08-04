@@ -43,9 +43,8 @@ watchEffect(async () => {
     const { data } = await axios.get(`${baseUrl}?${params.toString()}`)
     offers.value = data.data
     totalPages.value = data.meta.pagination.pageCount
-    console.log('offres récupérées :', data)
   } catch (error) {
-    console.log('Erreur à la récupération des annonces :', error)
+    console.error('Erreur à la récupération des annonces :', error)
   }
 })
 

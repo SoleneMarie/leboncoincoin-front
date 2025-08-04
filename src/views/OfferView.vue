@@ -3,11 +3,8 @@ import axios from 'axios'
 import { onMounted, ref, watch } from 'vue'
 import { formatPrice } from '@/utils/formatPrice'
 import { useCycleList } from '@vueuse/core'
-import { loadStripe } from '@stripe/stripe-js'
-
-const stripePromise = loadStripe(
-  'pk_test_51PuwocP7EWGvkP3C94fKlYJgPsKBh6deCHlhGWCpxNlYQQCBiye71vX1ocfBhHifKmoELR0kjHYLVgsdPN2pzCQv00QYzgpghj',
-)
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const { id } = defineProps({
   id: String,
@@ -19,30 +16,6 @@ const pictures = ref([])
 const currentPicture = ref(null)
 let cycle = null
 
-const handleBuy = async () => {
-  const stripe = await stripePromise
-
-  try {
-    const response = await axios.post(
-      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers/buy',
-      {
-        amount: postData.value.attributes.price,
-        title: postData.value.attributes.title,
-      },
-    )
-
-    console.log('reponse backend stripe:', response)
-    const sessionId = response.data.id
-
-    const { error } = await stripe.redirectToCheckout({ sessionId })
-    if (error) {
-      console.error('Stripe redirection error:', error)
-    }
-  } catch (error) {
-    console.error('Erreur lors de la création de la session Stripe:', error)
-  }
-}
-
 onMounted(async () => {
   try {
     const { data } = await axios.get(
@@ -50,9 +23,8 @@ onMounted(async () => {
     )
     postData.value = data.data
     pictures.value = data.data.attributes?.pictures?.data || []
-    console.log(data)
   } catch (error) {
-    console.log("Erreur dans la récupération des donnée de l'article : ", error)
+    console.error("Erreur dans la récupération des donnée de l'article : ", error)
   }
 })
 
@@ -65,6 +37,10 @@ watch(pictures, (newPictures) => {
 
 const next = () => cycle?.next()
 const prev = () => cycle?.prev()
+
+const goToPayment = () => {
+  router.push({ name: 'payment', params: { id } })
+}
 </script>
 
 <template>
@@ -116,7 +92,7 @@ const prev = () => cycle?.prev()
           </div>
         </div>
         <div class="buttons">
-          <button class="buy" @click="handleBuy">Acheter</button>
+          <button class="buy" @click="goToPayment">Acheter</button>
           <button class="message">Message</button>
         </div>
       </div>

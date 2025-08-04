@@ -24,8 +24,6 @@ if (!Store) {
 }
 
 const handleSubmit = async () => {
-  console.log('submit')
-
   const body = {
     identifier: email.value,
     password: password.value,
@@ -35,8 +33,6 @@ const handleSubmit = async () => {
     errorMessage.value = 'Veuillez remplir tous les champs'
     return
   }
-
-  console.log('email : ', email.value, 'password : ', password.value)
   try {
     connecting.value = true
     const response = await axios.post(
@@ -61,16 +57,12 @@ const handleSubmit = async () => {
         },
       },
     )
-    console.log('userDetails : ', userDetails)
+
     const avatar = userDetails.data.avatar.url
     Store.userAvatar.value = avatar
-    console.log('store :', Store)
-    // Store.userAvatar.value = response.data.user.username
     cookies.set('userToken', response.data.jwt)
 
-    console.log('Réponse serveur :', response.data)
-
-    router.push({ name: route.query.redirect || 'home' })
+    router.push(route.query.redirect || '/')
   } catch (error) {
     console.error('Erreur lors de la connexion :', error)
     const errMessage = error.response.data.error.message
@@ -134,7 +126,9 @@ const resetError = () => {
         </div>
         <div class="login-link">
           <p>Envie de nous rejoindre ?</p>
-          <RouterLink to="signup">Créer un compte</RouterLink>
+          <RouterLink :to="{ path: '/signup', query: { redirect: route.query.redirect } }"
+            >Créer un compte</RouterLink
+          >
         </div>
       </form>
     </div>

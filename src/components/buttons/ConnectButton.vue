@@ -28,10 +28,8 @@ const getUser = async () => {
         },
       },
     )
-    console.log('Utilisateur connecté :', response.data)
     userName.value = response.data.username
-    console.log('avatar:', response.data.avatar.url)
-    userAvatar.value = response.data.avatar.url
+    userAvatar.value = response.data.avatar?.url
     Store.userName.value = response.data.username
     Store.userAvatar.value = response.data.avatar?.url || ''
   } catch (error) {
@@ -64,7 +62,6 @@ const onAvatarChange = async (e) => {
     return
   }
   avatar.value = file
-  console.log('nouvel avatar :', file)
   const decoded = jwtDecode(token.value)
   const userId = decoded.id
 
@@ -82,7 +79,6 @@ const onAvatarChange = async (e) => {
         },
       },
     )
-    console.log('Avatar mis à jour avec succès.')
     toggleMenu()
     await getUser()
   } catch (err) {
