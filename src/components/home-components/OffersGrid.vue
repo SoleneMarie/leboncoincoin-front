@@ -7,60 +7,57 @@ defineProps({
 })
 </script>
 <template>
-  <section>
-    <div v-for="offer in offers" :key="offer.id" class="offer">
-      <div class="owner">
-        <div class="image-container">
-          <img
-            :src="
-              offer.attributes.owner?.data?.attributes?.avatar?.data
-                ? offer.attributes.owner.data.attributes.avatar.data.attributes.url
-                : '/src/assets/images/default-profile.jpeg'
-            "
-            alt="avatar"
-            class="avatar"
-          />
+  <section class="offers-wrapper">
+    <section class="grid">
+      <div v-for="offer in offers" :key="offer.id" class="offer">
+        <div class="owner">
+          <div class="image-container">
+            <img
+              :src="
+                offer.attributes.owner?.data?.attributes?.avatar?.data
+                  ? offer.attributes.owner.data.attributes.avatar.data.attributes.url
+                  : '/src/assets/images/default-profile.jpeg'
+              "
+              alt="avatar"
+              class="avatar"
+            />
+          </div>
+          <p>{{ offer.attributes.owner.data.attributes.username }}</p>
         </div>
-        <p>{{ offer.attributes.owner.data.attributes.username }}</p>
-      </div>
-      <RouterLink :to="{ name: 'offer', params: { id: offer.id } }">
-        <div class="main-image">
-          <img
-            :src="
-              offer.attributes.pictures?.data?.[0]
-                ? offer.attributes.pictures.data[0].attributes.url
-                : '/src/assets/images/placeholder.jpg'
-            "
-            alt="offer image"
-          />
+        <RouterLink :to="{ name: 'offer', params: { id: offer.id } }">
+          <div class="main-image">
+            <img
+              :src="
+                offer.attributes.pictures?.data?.[0]
+                  ? offer.attributes.pictures.data[0].attributes.url
+                  : '/src/assets/images/placeholder.jpg'
+              "
+              alt="offer image"
+            />
+          </div>
+          <div class="infos">
+            <p>{{ offer.attributes.title }}</p>
+            <p>{{ formatPrice(offer.attributes.price) }} €</p>
+          </div></RouterLink
+        >
+        <div class="date-and-like">
+          <p>{{ new Date(offer.attributes.publishedAt).toLocaleDateString('fr-FR') }}</p>
+          <font-awesome-icon icon="fa-regular fa-heart" />
         </div>
-        <div class="infos">
-          <p>{{ offer.attributes.title }}</p>
-          <p>{{ formatPrice(offer.attributes.price) }} €</p>
-        </div></RouterLink
-      >
-      <div class="date-and-like">
-        <p>{{ new Date(offer.attributes.publishedAt).toLocaleDateString('fr-FR') }}</p>
-        <font-awesome-icon icon="fa-regular fa-heart" />
       </div>
-    </div>
+    </section>
   </section>
 </template>
 
 <style scoped>
-section {
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 0;
-  margin-bottom: 20px;
 }
 
 .offer {
-  max-width: 200px;
-  min-width: 180px;
+  width: 100%;
   height: 380px;
   display: flex;
   flex-direction: column;

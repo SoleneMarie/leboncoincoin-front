@@ -19,12 +19,18 @@ const menuVisible = ref(false)
 const userLoaded = ref(false)
 
 const getUser = async () => {
+  const jwt = token.value || Store.userToken.value || cookies.get('userToken')
+
+  if (!jwt) {
+    console.error('Token manquant dans getUser()')
+    return
+  }
   try {
     const response = await axios.get(
       'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me?populate=*',
       {
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `Bearer ${jwt}`,
         },
       },
     )
@@ -62,9 +68,17 @@ const onAvatarChange = async (e) => {
     return
   }
   avatar.value = file
-  const decoded = jwtDecode(token.value)
-  const userId = decoded.id
+  console.log('store : ', Store)
+  const jwt = token.value || Store.userToken.value || cookies.get('userToken')
 
+  if (!jwt || typeof jwt !== 'string') {
+    console.error("Token manquant ou invalide pour la modification d'avatar.")
+    return
+  }
+
+  const decoded = jwtDecode(jwt)
+  const userId = decoded.id
+  console.log('jwt:', jwt)
   const formData = new FormData()
   formData.append('avatar', file)
 
@@ -74,7 +88,7 @@ const onAvatarChange = async (e) => {
       formData,
       {
         headers: {
-          Authorization: `Bearer ${token.value}`,
+          Authorization: `Bearer ${jwt}`,
           'Content-Type': 'multipart/form-data',
         },
       },
@@ -111,7 +125,7 @@ const handleLogout = () => {
     <div class="button-link" @click="toggleMenu">
       <div class="avatar-container">
         <img
-          :src="userAvatar || Store.userAvatar.value || '/src/assets/images/placeholder.jpg'"
+          :src="userAvatar || Store.userAvatar.value || '/src/assets/images/default-profile.jpeg'"
           alt="avatar de l'utilisateur"
         />
       </div>

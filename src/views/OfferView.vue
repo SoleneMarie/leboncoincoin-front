@@ -75,7 +75,7 @@ const goToPayment = () => {
                 :src="
                   postData.attributes?.owner?.data?.attributes?.avatar?.data?.attributes?.url
                     ? postData.attributes.owner.data.attributes.avatar.data.attributes.url
-                    : '/src/assets/images/default-profile.jpg'
+                    : '/src/assets/images/default-profile.jpeg'
                 "
                 alt="avatar"
               />

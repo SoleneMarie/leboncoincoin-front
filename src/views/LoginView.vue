@@ -33,8 +33,10 @@ const handleSubmit = async () => {
     errorMessage.value = 'Veuillez remplir tous les champs'
     return
   }
+
   try {
     connecting.value = true
+
     const response = await axios.post(
       'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/auth/local',
       body,
@@ -44,10 +46,17 @@ const handleSubmit = async () => {
         },
       },
     )
-    const jwt = response.data.jwt
+
+    const jwt = response?.data?.jwt
+    const user = response?.data?.user
+
+    if (!jwt || !user) {
+      throw new Error('Réponse du serveur invalide.')
+    }
 
     Store.userToken.value = jwt
-    Store.userName.value = response.data.user.username
+    Store.userName.value = user.username
+    cookies.set('userToken', jwt)
 
     const userDetails = await axios.get(
       'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me?populate=*',
@@ -58,19 +67,21 @@ const handleSubmit = async () => {
       },
     )
 
-    const avatar = userDetails.data.avatar.url
-    Store.userAvatar.value = avatar
-    cookies.set('userToken', response.data.jwt)
+    const avatarUrl = userDetails?.data?.avatar?.url || null
+    Store.userAvatar.value = avatarUrl
 
     router.push(route.query.redirect || '/')
   } catch (error) {
     console.error('Erreur lors de la connexion :', error)
-    const errMessage = error.response.data.error.message
+
+    const errMessage = error?.response?.data?.error?.message
+
     if (errMessage === 'Invalid identifier or password') {
       errorMessage.value = 'E-mail ou mot de passe invalide'
     } else {
       errorMessage.value = 'Un problème est survenu, veuillez essayer à nouveau'
     }
+
     connecting.value = false
   }
 }
