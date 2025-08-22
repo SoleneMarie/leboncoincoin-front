@@ -132,8 +132,8 @@ onMounted(async () => {
 
 <template>
   <section v-if="userLoaded">
-    <h2>Déposer une annonce</h2>
     <form @submit.prevent="handleSubmit">
+      <h2>Déposer une annonce</h2>
       <div class="form-part">
         <label for="title">Titre de l'annonce</label>
         <input
@@ -144,7 +144,7 @@ onMounted(async () => {
           v-model="title"
           @input="resetError"
         />
-        <p>Vous n'avez pas besoin de mentionner "Achat" ou "Vente" ici.</p>
+        <p class="description">Vous n'avez pas besoin de mentionner "Achat" ou "Vente" ici.</p>
       </div>
 
       <div class="form-part">
@@ -156,7 +156,7 @@ onMounted(async () => {
           v-model="description"
           @input="resetError"
         ></textarea>
-        <p>
+        <p class="description">
           Nous vous rappelons que la vente de contrefaçon est interdite. Nous vous invitons à
           ajouter tout élément permettant de prouver l'authenticité de votre article : numéro de
           série, facture, certificat, inscription de la marque sur l'article, emballage etc.
@@ -168,14 +168,14 @@ onMounted(async () => {
 
       <div class="form-part">
         <label for="price">Votre prix de vente</label>
-        <div class="inputContainer">
+        <div class="input">
           <input type="number" id="price" name="price" v-model="price" @input="resetError" />
           <p>€</p>
         </div>
       </div>
 
       <div class="form-part">
-        <p>Ajoutez des photos</p>
+        <p class="photo-p">Ajoutez des photos</p>
         <input
           id="photos"
           type="file"
@@ -217,6 +217,85 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+section {
+  display: flex;
+  align-items: flex-start; /* en haut verticalement */
+  justify-content: flex-start;
+  flex: 1;
+  width: 100%;
+}
+
+form {
+  margin: 20px;
+  width: 100%;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 34px;
+}
+
+.form-part {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+
+label,
+.photo-p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+input,
+textarea {
+  border: solid 1px #b2b4b8;
+  padding: 12px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Inputs spécifiques */
+.input {
+  border: solid 1px #eadfdb;
+  border-radius: 20px;
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  width: 180px;
+}
+
+.input input {
+  border: none;
+  padding: 0 10px;
+  width: 130px;
+}
+
+.input p {
+  border-left: solid 1px #eadfdb;
+  height: 40px;
+  padding: 0 10px;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------- */
+.description {
+  color: rgb(112, 106, 125);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -269,15 +348,15 @@ svg {
 .thumbs {
   margin-top: 12px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 8px;
-  max-width: 460px;
+  max-width: 600px;
   padding: 0;
   list-style: none;
 }
 .thumbs img {
   width: 100%;
-  height: 84px;
+  height: 140px;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #e3e8ef;

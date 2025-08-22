@@ -91,7 +91,7 @@ h4 {
   padding: 0 10px;
 }
 
-.price-limits-inputs input {
+.input input {
   border: none;
   padding: 0 10px;
   width: 120px;
