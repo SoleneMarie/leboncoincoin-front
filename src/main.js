@@ -24,6 +24,7 @@ import {
   faArrowLeft,
   faSpinner,
   faCamera,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as faHeartRegular, faClock } from '@fortawesome/free-regular-svg-icons'
 
@@ -44,6 +45,7 @@ library.add(
   faArrowLeft,
   faSpinner,
   faCamera,
+  faCheck
 )
 
 const app = createApp(App)

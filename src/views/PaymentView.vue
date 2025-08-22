@@ -98,66 +98,123 @@ const handlePayment = async () => {
 </script>
 
 <template>
-  <section v-if="offer" class="payment-wrapper">
-    <div class="form-part">
-      <h2>Finalisez votre paiement</h2>
-
-      <div class="personal-info">
-        <h3>Informations personnelles</h3>
-        <input v-model="firstname" placeholder="Prénom" />
-        <input v-model="lastname" placeholder="Nom" />
-        <input v-model="phone" placeholder="Téléphone" />
-        <p class="info">Recevoir un SMS pour l’arrivée de votre colis</p>
-      </div>
-
-      <div class="card-info">
-        <h3>Coordonnées bancaires</h3>
-        <div id="card-element" class="stripe-card"></div>
-      </div>
-
-      <button @click="handlePayment">Payer</button>
-      <p v-if="error" class="error">{{ error }}</p>
-    </div>
-
-    <div class="recap-part">
-      <div class="product">
-        <img
-          :src="
-            offer.attributes.pictures?.data?.[0]?.attributes?.url ||
-            '/src/assets/images/placeholder.jpg'
-          "
-          alt=""
-        />
-        <div>
-          <h4>{{ offer.attributes.title }}</h4>
-          <p>{{ offer.attributes.price.toFixed(2) }} €</p>
+  <section v-if="offer">
+    <h2>Finalisez votre paiement</h2>
+    <div class="payment-wrapper">
+      <div class="form-part">
+        <div class="personal-info">
+          <h3>Informations personnelles</h3>
+          <p class="description">
+            Une pièce d'identité vous sera demandée pour récupérer votre colis.
+          </p>
+          <label for="firstname">Prénom</label>
+          <input
+            type="text"
+            v-model="firstname"
+            placeholder="Prénom"
+            name="firstname"
+            id="firstname"
+            autocomplete="given-name"
+          />
+          <label for="lastname">Nom</label>
+          <input
+            type="text"
+            v-model="lastname"
+            placeholder="Nom"
+            name="lastname"
+            id="lastname"
+            autocomplete="family-name"
+          />
+          <label for="phone">Téléphone</label>
+          <input
+            type="tel"
+            v-model="phone"
+            placeholder="Téléphone"
+            name="phone"
+            id="phone"
+            autocomplete="tel"
+          />
+          <p class="description">
+            Recevoir un SMS pour l’arrivée de votre colis ou votre code de locker
+          </p>
         </div>
+        <p class="description">
+          Vous ne serez débité que lorsque le vendeur aura confirmé la disponibilité de la commande
+        </p>
+        <div class="card-info">
+          <h3>Coordonnées bancaires</h3>
+          <div id="card-element" class="stripe-card"></div>
+          <button @click="handlePayment">Payer</button>
+          <p class="description">
+            Paiment sécurisé. Votre banque peut vous demander d'autoriser le paiement pour compléter
+            votre achat. Vous êtes sur un serveur de paiement sécurisé par les normes ssl (https) et
+            pcidss de nos partenaires bancaires. Vos données sont encryptées pour plus de sécurité.
+          </p>
+        </div>
+
+        <p v-if="error" class="error">{{ error }}</p>
       </div>
 
-      <div class="line">
-        <label>
+      <div class="recap-part">
+        <div class="product">
+          <img
+            :src="
+              offer.attributes.pictures?.data?.[0]?.attributes?.url ||
+              '/src/assets/images/placeholder.jpg'
+            "
+            alt=""
+          />
+          <div class="product-attributes">
+            <h4>{{ offer.attributes.title }}</h4>
+            <p class="price">{{ offer.attributes.price.toFixed(2) }} €</p>
+          </div>
+        </div>
+        <div class="h4-div"><h4>Mode de remise</h4></div>
+
+        <div class="line">
           <input type="radio" name="delivery" value="hand" v-model="deliveryOption" />
-          Remise en main propre
-        </label>
-        <p>0,00 €</p>
-      </div>
+          <div class="input-infos">
+            <label for="delivery"> Remise en main propre </label>
+            <div class="infos-p">
+              <p class="light-description">
+                Payez en ligne et récupérez votre achat en main propre lors de votre rendez-vous
+                avec le vendeur
+              </p>
+              <p class="price">0,00 €</p>
+            </div>
+          </div>
+        </div>
 
-      <div class="line">
-        <label>
+        <div class="line">
           <input type="radio" name="delivery" value="colissimo" v-model="deliveryOption" />
-          Colissimo
-        </label>
-        <p>15,60 €</p>
-      </div>
+          <div class="input-infos">
+            <label for="delivery"> Colissimo </label>
+            <div class="infos-p">
+              <p class="light-description">A votre domicile sous 2-3 jours</p>
+              <p class="price">15,60 €</p>
+            </div>
+          </div>
+        </div>
 
-      <div class="line">
-        <p>Protection Leboncoin</p>
-        <p>0,99 €</p>
-      </div>
+        <div class="protect-line">
+          <h4>Protection Leboncoin</h4>
+          <p class="price">0,99 €</p>
+        </div>
+        <div class="protection">
+          <p>
+            <font-awesome-icon :icon="['fas', 'check']" class="check-icon" /> Votre argent est
+            sécurisé et versé au bon moment
+          </p>
+          <p>
+            <font-awesome-icon :icon="['fas', 'check']" class="check-icon" /> Notre service client
+            dédié vous accompagne
+          </p>
+        </div>
 
-      <div class="total">
-        <p>Total</p>
-        <p>{{ totalPrice.toFixed(2) }} €</p>
+        <div class="total">
+          <h4>Total</h4>
+          <p class="price">{{ totalPrice.toFixed(2) }} €</p>
+        </div>
       </div>
     </div>
   </section>
@@ -166,41 +223,111 @@ const handlePayment = async () => {
 </template>
 
 <style scoped>
+section {
+  width: 100%;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+h4 {
+  margin: 0 20px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.h4-div {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  margin-top: 20px;
+  padding-top: 20px;
+  margin-bottom: 10px;
+}
+
+.description,
+.light-description {
+  font-size: 12px;
+}
+
+.light-description {
+  color: rgb(112, 106, 125);
+  line-height: 22px;
+  margin-top: 4px;
+}
+
 .payment-wrapper {
   display: flex;
   justify-content: space-between;
-  gap: 30px;
-  padding: 20px;
+  gap: 10px;
+}
+
+.form-part {
+  width: 60%;
+}
+
+.recap-part {
+  width: 38%;
 }
 
 .form-part,
 .recap-part {
-  width: 48%;
+  box-sizing: border-box;
 }
 
-input {
+.personal-info {
+  margin-bottom: 20px;
+}
+
+.personal-info label {
+  display: block;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.card-info {
+  margin-top: 20px;
+}
+
+.form-part input {
   display: block;
   width: 100%;
-  padding: 8px;
+  padding: 12px;
   margin: 6px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 button {
   margin-top: 20px;
-  background-color: #ec5a12;
-  color: white;
-  padding: 12px 20px;
+  margin-bottom: 12px;
+  display: flex;
+  padding: 10px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #f9eeea;
+  font-weight: bold;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  width: 70px;
+  background-color: #ec5a12;
 }
 
 .stripe-card {
   padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
 }
 
 .product {
@@ -210,27 +337,94 @@ button {
 }
 
 .product img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 4px;
 }
 
-.line,
-.total {
+.product-attributes {
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 8px 0;
+  align-items: center;
+}
+
+.price {
+  color: #924823;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.total,
+.line,
+.protect-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .total {
-  font-weight: bold;
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
+  margin: 8px 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.protect-line {
+  margin: 20px 30px 20px 0;
+}
+
+.protection {
+  font-size: 14px;
+  line-height: 24px;
+  margin: -14px 20px 0 20px;
+}
+
+.line h4 {
+  margin: 30px 0 10px 0;
+  display: block;
 }
 
 .error {
   color: red;
   margin-top: 10px;
+}
+
+.personal-info,
+.card-info,
+.recap-part {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.personal-info,
+.card-info {
+  padding: 20px;
+}
+
+.recap-part {
+  padding: 20px 0;
+  height: 460px;
+}
+
+.product,
+.line,
+.total p {
+  margin: 0 20px;
+}
+
+.input-infos {
+  width: 100%;
+  padding: 10px;
+}
+
+.infos-p {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+svg {
+  color: #519a53;
 }
 </style>
