@@ -22,11 +22,11 @@ const applyFilters = () => {
       <h4>Prix</h4>
       <div class="price-limits-inputs">
         <div class="input">
-          <input type="number" id="min-price" name="min-price" v-model="minPrice" />
+          <input type="number" id="min-price" name="min-price" v-model="minPrice" min="1" />
           <p>€</p>
         </div>
         <div class="input">
-          <input type="number" id="max-price" name="min-price" v-model="maxPrice" />
+          <input type="number" id="max-price" name="min-price" v-model="maxPrice" min="1" />
           <p>€</p>
         </div>
       </div>

@@ -65,8 +65,16 @@ const handleFilters = ({ minPrice, maxPrice, sortOrder }) => {
     page: 1,
   }
 
-  if (minPrice) query.minPrice = minPrice
-  if (maxPrice) query.maxPrice = maxPrice
+  if (minPrice) {
+    query.minPrice = minPrice
+  } else {
+    query.minPrice = 1
+  }
+  if (maxPrice) {
+    query.maxPrice = maxPrice
+  } else {
+    query.maxPrice = ''
+  }
   if (sortOrder !== 'none') query.sort = `price:${sortOrder}`
   else delete query.sort
 
