@@ -8,6 +8,7 @@ import SuccessView from '@/views/SuccessView.vue'
 import CancelView from '@/views/CancelView.vue'
 import PaymentView from '@/views/PaymentView.vue'
 import NotFound from '@/views/NotFound.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,12 @@ const router = createRouter({
     { path: '/signup', name: 'signup', component: SignUpView },
     { path: '/login', name: 'login', component: LoginView },
     { path: '/publish', name: 'publish', component: PublishView, meta: { Authenticated: true } },
+    {
+      path: '/profile/:id',
+      name: 'profile',
+      component: ProfileView,
+      meta: { Authenticated: true },
+    },
     { path: '/success', name: 'success', component: SuccessView },
     { path: '/cancel', name: 'cancel', component: CancelView },
     {

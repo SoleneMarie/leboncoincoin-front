@@ -1,165 +1,84 @@
 <script setup>
-import axios from 'axios'
-import { inject, ref, watch } from 'vue'
+import { inject, onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useRouter } from 'vue-router'
 import { useCookies } from '@/utils/cookiesHandler'
-import { jwtDecode } from 'jwt-decode'
+import { useUser } from '@/utils/userHandler'
 
 const cookies = useCookies()
 const Store = inject('GlobalStore')
-const router = useRouter()
 
-const token = ref(cookies.get('userToken'))
+const { token, userName, userAvatar, jwt, userId, userLoaded, decodeToken, getUser } =
+  useUser(Store)
 
-const userName = ref('')
-const userAvatar = ref('')
-const avatar = ref(null)
-const menuVisible = ref(false)
-const userLoaded = ref(false)
-
-const getUser = async () => {
-  const jwt = token.value || Store.userToken.value || cookies.get('userToken')
-
-  if (!jwt) {
-    console.error('Token manquant dans getUser()')
-    return
+onMounted(async () => {
+  if (token.value) {
+    console.log('token : ', token.value)
+    decodeToken(token.value)
+    await getUser()
   }
-  try {
-    const response = await axios.get(
-      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me?populate=*',
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      },
-    )
-    userName.value = response.data.username
-    userAvatar.value = response.data.avatar?.url
-    Store.userName.value = response.data.username
-    Store.userAvatar.value = response.data.avatar?.url || ''
-  } catch (error) {
-    console.error('Erreur lors de la récupération de l’utilisateur :', error)
-  } finally {
-    userLoaded.value = true
-  }
-}
+})
 
 watch(
   () => cookies.get('userToken'),
   async (newToken) => {
     token.value = newToken
     if (newToken) {
+      userLoaded.value = false
+      decodeToken(newToken)
       await getUser()
     } else {
+      userId.value = ''
+      jwt.value = ''
       userLoaded.value = false
+      userName.value = ''
+      userAvatar.value = ''
+      Store.userName.value = ''
+      Store.userAvatar.value = ''
     }
   },
   { immediate: true }, // Lance immédiatement au premier rendu
 )
-
-const toggleMenu = () => {
-  menuVisible.value = !menuVisible.value
-}
-
-const onAvatarChange = async (e) => {
-  const file = e.target.files[0]
-  if (!file) {
-    return
-  }
-  avatar.value = file
-  console.log('store : ', Store)
-  const jwt = token.value || Store.userToken.value || cookies.get('userToken')
-
-  if (!jwt || typeof jwt !== 'string') {
-    console.error("Token manquant ou invalide pour la modification d'avatar.")
-    return
-  }
-
-  const decoded = jwtDecode(jwt)
-  const userId = decoded.id
-  console.log('jwt:', jwt)
-  const formData = new FormData()
-  formData.append('avatar', file)
-
-  try {
-    await axios.put(
-      `https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/${userId}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      },
-    )
-    toggleMenu()
-    await getUser()
-  } catch (err) {
-    console.error('Erreur lors de la mise à jour de l’avatar :', err)
-  }
-}
-
-const handleLogout = () => {
-  cookies.remove('userToken')
-  Store.userToken.value = ''
-  Store.userName.value = ''
-  Store.userAvatar.value = ''
-  userName.value = ''
-  userAvatar.value = ''
-  token.value = null
-  menuVisible.value = false
-  router.push('/login') // ou '/' selon le comportement voulu
-}
 </script>
 
 <template>
-  <!-- S'il n'y a pas de token, on montre le lien de connexion -->
   <RouterLink to="/login" class="button-link" v-if="!token && !Store.userToken.value">
     <font-awesome-icon :icon="['fas', 'user']" />
     <p>Se connecter</p>
   </RouterLink>
 
-  <!-- Sinon, une fois que l'utilisateur est chargé (même sans image), on affiche le menu -->
-  <div class="dropdown-wrapper" v-else-if="userLoaded">
-    <div class="button-link" @click="toggleMenu">
-      <div class="avatar-container">
-        <img
-          :src="userAvatar || Store.userAvatar.value || '/src/assets/images/default-profile.jpeg'"
-          alt="avatar de l'utilisateur"
-        />
+  <div v-else-if="userLoaded">
+    <RouterLink :to="{ name: 'profile', params: { id: userId } }" class="button-link">
+      <div class="profile">
+        <div class="avatar-container">
+          <img
+            v-if="userAvatar || Store.userAvatar.value"
+            :src="userAvatar || Store.userAvatar.value"
+            alt="avatar de l'utilisateur"
+          />
+          <p v-else class="letter-avatar">{{ (userName || '').charAt(0).toUpperCase() }}</p>
+        </div>
+        <h4>{{ userName || Store.userName.value }}</h4>
       </div>
-      <h4>{{ userName || Store.userName.value }}</h4>
-    </div>
-
-    <div class="dropdown-menu" v-if="menuVisible">
-      <label class="avatar-upload">
-        <p>Changer l’avatar</p>
-        <input type="file" accept="image/*" @change="onAvatarChange" style="display: none" />
-      </label>
-
-      <button @click="handleLogout" class="logout-button">Se déconnecter</button>
-    </div>
+    </RouterLink>
   </div>
 </template>
 
 <style scoped>
 .button-link {
   display: flex;
-  padding: 10px 8px;
+  padding: 8px;
   border-radius: 10px;
   white-space: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   background-color: white;
   border: solid 1px #eadfdb;
-  width: 110px;
+  width: 100px;
   cursor: pointer;
 }
 
 .button-link p {
-  font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -168,48 +87,38 @@ const handleLogout = () => {
 }
 
 .button-link svg {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 h4 {
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 13px;
 }
 
-.dropdown-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
-  background: white;
-  border: 1px solid #e3e6e8;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+.profile {
+  height: 48px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  width: 120px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.avatar-upload {
-  cursor: pointer;
-  text-decoration: none;
+  gap: 6px;
 }
 
 .avatar-container {
-  height: 34px;
-  width: 34px;
+  height: 28px;
+  width: 28px;
   border-radius: 50%;
+  background-color: #566e82;
+}
+
+.letter-avatar {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: white;
 }
 
 img {
@@ -217,19 +126,5 @@ img {
   width: 100%;
   object-fit: cover;
   border-radius: 50%;
-}
-
-.logout-button {
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 0;
-}
-
-.logout-button:hover {
-  text-decoration: underline;
 }
 </style>
