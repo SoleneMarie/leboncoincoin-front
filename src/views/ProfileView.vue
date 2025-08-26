@@ -15,6 +15,10 @@ const error = ref(null)
 const offers = ref([])
 const length = ref(0)
 
+const removeOffer = (id) => {
+  offers.value = offers.value.filter((offer) => offer.id !== id)
+}
+
 const getUserOffers = async () => {
   if (!userId.value) return
   try {
@@ -113,7 +117,9 @@ const onAvatarChange = async (e) => {
     <div class="profile-offers">
       <div v-if="offers.length !== 0">
         <h3>{{ length }} annonces</h3>
-        <div v-for="offer in offers" :key="offer.id"><MiniOfferVue :offer="offer" /></div>
+        <div v-for="offer in offers" :key="offer.id">
+          <MiniOfferVue :offer="offer" :token="token" @offer-deleted="removeOffer" />
+        </div>
       </div>
       <div v-else>
         <h3>Aucune annonce</h3>

@@ -41,9 +41,9 @@ watch(
 </script>
 
 <template>
-  <RouterLink to="/login" class="button-link" v-if="!token && !Store.userToken.value">
+  <RouterLink to="/login" class="button-link" v-if="!token.value && !Store.userToken.value">
     <font-awesome-icon :icon="['fas', 'user']" />
-    <p>Se connecter</p>
+    <p class="connect">Se connecter</p>
   </RouterLink>
 
   <div v-else-if="userLoaded">
@@ -92,6 +92,10 @@ watch(
 
 h4 {
   font-size: 13px;
+}
+
+.connect {
+  font-size: 12px;
 }
 
 .profile {

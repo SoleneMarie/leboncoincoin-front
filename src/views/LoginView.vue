@@ -126,7 +126,7 @@ const resetError = () => {
 
         <InscriptionButton
           v-if="connecting"
-          disabled="true"
+          :disabled="true"
           text="Connexion en cours"
           icon="spinner"
         />

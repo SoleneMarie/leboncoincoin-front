@@ -1,23 +1,48 @@
 <script setup>
 import placeholder from '@/assets/images/placeholder.jpg'
+import axios from 'axios'
 
 const props = defineProps({
   offer: {
     type: Object,
     required: true,
   },
+  token: {
+    type: [String, null],
+    default: null,
+  },
 })
+
+const emit = defineEmits(['offer-deleted'])
+
 console.log(
   props.offer.id,
   props.offer.attributes.title,
   props.offer.attributes.price,
-  props.offer.attributes.pictures.data[0].attributes.url,
+  props.offer.attributes.pictures?.data?.[0]?.attributes?.url,
+  props.token,
 )
 
+const offerId = props.offer.id
 const title = props.offer.attributes.title
 const price = props.offer.attributes.price
 const picture = props.offer.attributes.pictures?.data?.[0]?.attributes?.url
+const userToken = props.token
+
+const deleteOffer = async (id) => {
+  try {
+    await axios.delete(`https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers/${id}`, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    })
+    emit('offer-deleted', id)
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'offre:", error)
+  }
+}
 </script>
+
 <template>
   <div class="offer-wrapper">
     <div class="offer-infos">
@@ -31,7 +56,9 @@ const picture = props.offer.attributes.pictures?.data?.[0]?.attributes?.url
         <p>{{ price }} €</p>
       </div>
     </div>
-    <div class="delete-button"><font-awesome-icon :icon="['fas', 'trash']" /></div>
+    <div class="delete-button" @click="deleteOffer(offerId)">
+      <font-awesome-icon :icon="['fas', 'trash']" />
+    </div>
   </div>
 </template>
 <style scoped>
@@ -85,5 +112,6 @@ h2 {
 
 .delete-button {
   color: #ec5a12;
+  cursor: pointer;
 }
 </style>
