@@ -28,7 +28,7 @@ const router = createRouter({
     { path: '/login', name: 'login', component: LoginView },
     { path: '/publish', name: 'publish', component: PublishView, meta: { Authenticated: true } },
     {
-      path: '/profile/:id',
+      path: '/profile',
       name: 'profile',
       component: ProfileView,
       meta: { Authenticated: true },

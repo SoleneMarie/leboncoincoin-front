@@ -10,6 +10,8 @@ const Store = inject('GlobalStore')
 const { token, userName, userAvatar, jwt, userId, userLoaded, decodeToken, getUser } =
   useUser(Store)
 
+console.log('valeur du token au montage du composant :', token.value)
+
 onMounted(async () => {
   if (token.value) {
     console.log('token : ', token.value)
@@ -41,26 +43,25 @@ watch(
 </script>
 
 <template>
-  <RouterLink to="/login" class="button-link" v-if="!token.value && !Store.userToken.value">
-    <font-awesome-icon :icon="['fas', 'user']" />
-    <p class="connect">Se connecter</p>
-  </RouterLink>
-
-  <div v-else-if="userLoaded">
-    <RouterLink :to="{ name: 'profile', params: { id: userId } }" class="button-link">
+  <div v-if="userLoaded && token">
+    <RouterLink :to="{ name: 'profile' }" class="button-link">
       <div class="profile">
         <div class="avatar-container">
           <img
-            v-if="userAvatar || Store.userAvatar.value"
-            :src="userAvatar || Store.userAvatar.value"
+            v-if="userAvatar || Store.userAvatar"
+            :src="userAvatar || Store.userAvatar"
             alt="avatar de l'utilisateur"
           />
           <p v-else class="letter-avatar">{{ (userName || '').charAt(0).toUpperCase() }}</p>
         </div>
-        <h4>{{ userName || Store.userName.value }}</h4>
+        <h4>{{ userName || Store.userName }}</h4>
       </div>
     </RouterLink>
   </div>
+  <RouterLink to="/login" class="button-link" v-else>
+    <font-awesome-icon :icon="['fas', 'user']" />
+    <p class="connect">Se connecter</p>
+  </RouterLink>
 </template>
 
 <style scoped>

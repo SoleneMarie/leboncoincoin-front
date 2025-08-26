@@ -22,11 +22,25 @@ const applyFilters = () => {
       <h4>Prix</h4>
       <div class="price-limits-inputs">
         <div class="input">
-          <input type="number" id="min-price" name="min-price" v-model="minPrice" min="1" />
+          <input
+            type="number"
+            id="min-price"
+            name="min-price"
+            v-model="minPrice"
+            min="1"
+            placeholder="Minimum"
+          />
           <p>€</p>
         </div>
         <div class="input">
-          <input type="number" id="max-price" name="min-price" v-model="maxPrice" min="1" />
+          <input
+            type="number"
+            id="max-price"
+            name="min-price"
+            v-model="maxPrice"
+            min="1"
+            placeholder="Maximum"
+          />
           <p>€</p>
         </div>
       </div>
@@ -94,7 +108,7 @@ h4 {
 .input input {
   border: none;
   padding: 0 10px;
-  width: 120px;
+  width: 100px;
 }
 
 input:focus {
