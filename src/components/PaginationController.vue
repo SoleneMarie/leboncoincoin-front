@@ -67,7 +67,7 @@ div {
   justify-content: center;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 button {
