@@ -18,48 +18,51 @@ const applyFilters = () => {
 
 <template>
   <form @submit.prevent="applyFilters">
-    <div class="price-limits">
-      <h4>Prix</h4>
-      <div class="price-limits-inputs">
-        <div class="input">
-          <input
-            type="number"
-            id="min-price"
-            name="min-price"
-            v-model="minPrice"
-            min="1"
-            placeholder="Minimum"
-          />
-          <p>€</p>
-        </div>
-        <div class="input">
-          <input
-            type="number"
-            id="max-price"
-            name="min-price"
-            v-model="maxPrice"
-            min="1"
-            placeholder="Maximum"
-          />
-          <p>€</p>
+    <div class="main-part">
+      <div class="price-limits">
+        <h4>Prix</h4>
+
+        <div class="price-limits-inputs">
+          <div class="input">
+            <input
+              type="number"
+              id="min-price"
+              name="min-price"
+              v-model="minPrice"
+              min="1"
+              placeholder="Minimum"
+            />
+            <p>€</p>
+          </div>
+          <div class="input">
+            <input
+              type="number"
+              id="max-price"
+              name="min-price"
+              v-model="maxPrice"
+              min="1"
+              placeholder="Maximum"
+            />
+            <p>€</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="price-order">
-      <h4>Tri</h4>
-      <div class="price-order-inputs">
-        <label>
-          Prix croissant
-          <input type="radio" name="sort" value="asc" v-model="sortOrder" />
-        </label>
-        <label>
-          Prix décroissant
-          <input type="radio" name="sort" value="desc" v-model="sortOrder" />
-        </label>
-        <label
-          >Pas de tri
-          <input type="radio" name="sort" value="none" v-model="sortOrder" />
-        </label>
+      <div class="price-order">
+        <h4>Tri</h4>
+        <div class="price-order-inputs">
+          <label>
+            Prix croissant
+            <input type="radio" name="sort" value="asc" v-model="sortOrder" />
+          </label>
+          <label>
+            Prix décroissant
+            <input type="radio" name="sort" value="desc" v-model="sortOrder" />
+          </label>
+          <label
+            >Pas de tri
+            <input type="radio" name="sort" value="none" v-model="sortOrder" />
+          </label>
+        </div>
       </div>
     </div>
     <div class="search-button">
@@ -79,6 +82,14 @@ form {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 24px;
+  box-sizing: border-box;
+}
+
+.main-part {
+  display: flex;
+  width: 100%;
+  gap: 40px;
+  align-items: center;
 }
 
 h4 {
@@ -163,5 +174,35 @@ button {
   align-items: center;
   gap: 10px;
   font-size: 14px;
+}
+
+@media (max-width: 420px) {
+  .price-order-inputs {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input input {
+    width: 80px;
+  }
+}
+
+@media (max-width: 530px) {
+  form {
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+  }
+}
+
+@media (max-width: 920px) {
+  h4 {
+    display: none;
+  }
+  .main-part {
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+  }
 }
 </style>

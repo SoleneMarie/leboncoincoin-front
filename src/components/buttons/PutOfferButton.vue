@@ -12,6 +12,12 @@ import { RouterLink } from 'vue-router'
 </template>
 
 <style scoped>
+@media (max-width: 860px) {
+  p {
+    display: none;
+  }
+}
+
 button {
   display: flex;
   padding: 10px 8px;

@@ -149,6 +149,7 @@ section {
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .form-div {

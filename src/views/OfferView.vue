@@ -141,6 +141,7 @@ const goToPayment = () => {
 <style scoped>
 section {
   width: 100%;
+  box-sizing: border-box;
 }
 
 .main-body {
@@ -154,7 +155,7 @@ section {
 .img-nav {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .img-nav svg {
@@ -163,20 +164,24 @@ section {
 }
 
 .image-container {
-  width: 450px;
+  max-width: 450px;
   aspect-ratio: 5 / 4;
+  border-radius: 10px;
 }
 
 img {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .right-col {
   display: flex;
   flex-direction: column;
   gap: 40px;
+  min-width: 280px;
+  margin-left: 20px;
 }
 
 .avatar-container {
@@ -353,5 +358,20 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+@media (max-width: 670px) {
+  .main-body {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .right-col {
+    margin-left: 0;
+  }
+}
+@media (max-width: 745px) {
+  .answer {
+    line-height: 20px;
+  }
 }
 </style>

@@ -11,25 +11,51 @@ const searchValue = ref('')
 
 <template>
   <header>
-    <section>
+    <section class="main">
       <RouterLink to="/" class="image-div">
         <img src="/src/assets/images/logo.svg" alt="logo leboncoin" />
       </RouterLink>
-      <div class="actions">
-        <PutOfferButton />
-        <SearchBar v-model:searchValue="searchValue" />
-      </div>
-      <div>
-        <ConnectButton />
+      <div class="right-side">
+        <div class="actions">
+          <PutOfferButton />
+          <SearchBar v-model:searchValue="searchValue" />
+        </div>
+        <div>
+          <ConnectButton />
+        </div>
       </div>
     </section>
-    <section>
+    <section class="select">
       <SelectType />
     </section>
   </header>
 </template>
 
 <style scoped>
+@media (max-width: 600px) {
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .image-div {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 12px;
+  }
+}
+@media (min-width: 601px) {
+  .main {
+    display: flex;
+    gap: 60px;
+  }
+
+  .image-div {
+    width: 160px;
+    height: 50px;
+  }
+}
+
 header {
   padding: 12px 0;
   margin-bottom: 20px;
@@ -38,6 +64,7 @@ header {
   position: sticky;
   top: 0;
   background-color: white;
+  box-sizing: border-box;
 }
 
 header > section:first-child {
@@ -50,11 +77,6 @@ section {
   align-items: center;
 }
 
-.image-div {
-  width: 160px;
-  height: 50px;
-}
-
 img {
   height: 100%;
   width: 100%;
@@ -62,10 +84,18 @@ img {
   object-fit: contain;
 }
 
+.right-side {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+}
+
 .actions {
   display: flex;
   align-items: center;
   gap: 14px;
-  width: 60%;
+  width: 75%;
+  box-sizing: border-box;
 }
+
 </style>

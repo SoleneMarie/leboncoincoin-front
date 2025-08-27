@@ -73,6 +73,23 @@ watch(
 </template>
 
 <style scoped>
+@media (max-width: 860px) {
+  p,
+  h4 {
+    display: none;
+  }
+
+  .button-link {
+    width: 50px;
+  }
+}
+
+@media (min-width: 861px) {
+  .button-link {
+    width: 110px;
+  }
+}
+
 .button-link {
   display: flex;
   padding: 10px 8px;
@@ -83,7 +100,6 @@ watch(
   gap: 10px;
   background-color: white;
   border: solid 1px #eadfdb;
-  width: 110px;
   cursor: pointer;
 }
 
@@ -103,11 +119,6 @@ watch(
 h4 {
   font-size: 14px;
   font-weight: bold;
-}
-
-.wrapper {
-  position: relative;
-  display: inline-block;
 }
 
 .avatar-container {

@@ -45,6 +45,7 @@ div {
   position: relative;
   flex: 1;
   margin-right: 40px;
+  box-sizing: border-box;
 }
 
 input {

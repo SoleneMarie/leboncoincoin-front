@@ -84,9 +84,6 @@ const handlePayment = async () => {
     )
 
     if (response.data.status === 'succeeded') {
-      alert(
-        `Paiement validé pour l'achat du produit "${offer.value.attributes.title}" par ${firstname.value} ${lastname.value}`,
-      )
       router.push('/success')
     } else {
       error.value = "Le paiement n'a pas pu être validé."
@@ -225,6 +222,7 @@ const handlePayment = async () => {
 <style scoped>
 section {
   width: 100%;
+  box-sizing: border-box;
 }
 
 h2 {
@@ -405,6 +403,7 @@ button {
 .recap-part {
   padding: 20px 0;
   height: 460px;
+  min-width: 400px;
 }
 
 .product,
@@ -426,5 +425,21 @@ button {
 
 svg {
   color: #519a53;
+}
+
+@media (max-width: 800px) {
+  h2 {
+    text-align: center;
+  }
+
+  .payment-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-part,
+  .recap-part {
+    width: 80%;
+  }
 }
 </style>

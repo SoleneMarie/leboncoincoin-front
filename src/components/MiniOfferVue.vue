@@ -62,7 +62,6 @@ const deleteOffer = async (id) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
   box-sizing: border-box;
 }
 
@@ -105,5 +104,38 @@ h2 {
 .delete-button {
   color: #ec5a12;
   cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  h2 {
+    margin-left: 10px;
+    width: 160px;
+    font-size: 16px;
+    white-space: wrap;
+    line-height: 24px;
+  }
+
+  .offer-price {
+    font-size: 15px;
+  }
+
+  .picture-section {
+    width: 80px;
+    height: 80px;
+  }
+
+  .offer-infos {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 440px) {
+  h2 {
+    width: 120px;
+    font-size: 14px;
+  }
+  .offer-price {
+    font-size: 13px;
+  }
 }
 </style>

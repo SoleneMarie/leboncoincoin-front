@@ -158,6 +158,7 @@ section {
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .form-div {
@@ -178,6 +179,7 @@ h1 {
 h1 + p {
   font-weight: 600;
   padding-bottom: 30px;
+  line-height: 24px;
 }
 
 span {

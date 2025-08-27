@@ -223,11 +223,13 @@ section {
   justify-content: flex-start;
   flex: 1;
   width: 100%;
+  box-sizing: border-box;
 }
 
 form {
-  margin: 20px;
   width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
 }
 
 h2 {
