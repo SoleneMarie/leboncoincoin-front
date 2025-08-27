@@ -36,9 +36,6 @@ const getUserOffers = async () => {
     } else {
       length.value = 0
     }
-
-    console.log('offres : ', response.data.data)
-    console.log('longueur,', length.value)
   } catch (error) {
     console.error('Erreur lors du chargement des offres :', error)
   }
@@ -68,7 +65,6 @@ const onAvatarChange = async (e) => {
 
   loading.value = true
   try {
-    console.log('userId au moment du PUT:', userId.value)
     await axios.put(
       `https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/${userId.value}`,
       formData,

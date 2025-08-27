@@ -15,14 +15,6 @@ const props = defineProps({
 
 const emit = defineEmits(['offer-deleted'])
 
-console.log(
-  props.offer.id,
-  props.offer.attributes.title,
-  props.offer.attributes.price,
-  props.offer.attributes.pictures?.data?.[0]?.attributes?.url,
-  props.token,
-)
-
 const offerId = props.offer.id
 const title = props.offer.attributes.title
 const price = props.offer.attributes.price

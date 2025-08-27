@@ -13,12 +13,12 @@ const onInput = (event) => {
   const value = event.target.value
   emit('update:searchValue', value)
   if (value === '') {
-    handleSearchInput()
+    handleSearchInput(true)
   }
 }
 
-const handleSearchInput = () => {
-  const trimmed = searchValue.trim()
+const handleSearchInput = (blank) => {
+  const trimmed = blank ? '' : searchValue.trim()
   router.push({
     name: 'home',
     query: trimmed ? { title: trimmed } : {},
@@ -34,9 +34,9 @@ const handleSearchInput = () => {
       placeholder="Rechercher sur leboncoin"
       :value="searchValue"
       @input="onInput"
-      @keydown.enter="handleSearchInput"
+      @keydown.enter="handleSearchInput(false)"
     />
-    <font-awesome-icon :icon="['fas', 'search']" @click="handleSearchInput" />
+    <font-awesome-icon :icon="['fas', 'search']" @click="handleSearchInput(false)" />
   </div>
 </template>
 

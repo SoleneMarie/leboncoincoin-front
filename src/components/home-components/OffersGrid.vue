@@ -8,7 +8,8 @@ defineProps({
 </script>
 <template>
   <section class="offers-wrapper">
-    <section class="grid">
+    <div v-if="offers.length === 0" class="empty"><p>Aucun offre disponible</p></div>
+    <section v-else class="grid">
       <div v-for="offer in offers" :key="offer.id" class="offer">
         <div class="owner">
           <div class="image-container">
@@ -54,6 +55,16 @@ defineProps({
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
+}
+
+.empty {
+  height: 200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .offer {

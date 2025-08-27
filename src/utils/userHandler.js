@@ -41,7 +41,6 @@ export function useUser(store) {
       )
       jwt.value = raw
 
-      console.log(response.data)
       userName.value = response.data.username
       userAvatar.value = response.data.avatar?.url || ''
       userId.value = response.data.id || ''
@@ -57,7 +56,7 @@ export function useUser(store) {
 
   const handleLogout = () => {
     cookies.remove('userToken')
-    console.log('store:', store)
+
     store.userToken.value = ''
     store.userName.value = ''
     store.userAvatar.value = ''
