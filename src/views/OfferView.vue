@@ -12,6 +12,7 @@ const { id } = defineProps({
 
 const postData = ref([])
 const pictures = ref([])
+const isLoading = ref(true)
 
 const currentPicture = ref(null)
 let cycle = null
@@ -25,6 +26,8 @@ onMounted(async () => {
     pictures.value = data.data.attributes?.pictures?.data || []
   } catch (error) {
     console.error("Erreur dans la récupération des donnée de l'article : ", error)
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -44,7 +47,7 @@ const goToPayment = () => {
 </script>
 
 <template>
-  <section v-if="postData.attributes">
+  <section v-if="!isLoading && postData.attributes">
     <div class="main-body">
       <div class="img-nav">
         <font-awesome-icon
@@ -113,7 +116,26 @@ const goToPayment = () => {
       <p>La Valette-du-Var (83160)</p>
     </div>
   </section>
-  <p v-else>Chargement...</p>
+  <section v-else class="skeleton">
+    <div class="skeleton-main-body">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-right">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
+    <div class="skeleton-offer">
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+    </div>
+    <div class="skeleton-desc">
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -275,5 +297,61 @@ h4 {
   gap: 6px;
   align-items: center;
   font-size: 14px;
+}
+
+.skeleton {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.skeleton-main-body {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+}
+
+.skeleton-img {
+  width: 450px;
+  aspect-ratio: 5 / 4;
+  background: #e3e6e8;
+  border-radius: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton-right {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 200px;
+}
+
+.skeleton-avatar {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background: #e3e6e8;
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton-line {
+  height: 16px;
+  background: #e3e6e8;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton-line.short {
+  width: 120px;
+}
+
+.skeleton-offer,
+.skeleton-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 </style>

@@ -9,6 +9,14 @@ const emit = defineEmits(['update:searchValue'])
 
 const router = useRouter()
 
+const onInput = (event) => {
+  const value = event.target.value
+  emit('update:searchValue', value)
+  if (value === '') {
+    handleSearchInput()
+  }
+}
+
 const handleSearchInput = () => {
   const trimmed = searchValue.trim()
   router.push({
@@ -25,7 +33,7 @@ const handleSearchInput = () => {
       type="text"
       placeholder="Rechercher sur leboncoin"
       :value="searchValue"
-      @input="emit('update:searchValue', $event.target.value)"
+      @input="onInput"
       @keydown.enter="handleSearchInput"
     />
     <font-awesome-icon :icon="['fas', 'search']" @click="handleSearchInput" />
