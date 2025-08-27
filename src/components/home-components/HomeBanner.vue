@@ -6,14 +6,14 @@ import PutOfferButton from '../buttons/PutOfferButton.vue'
   <section>
     <div class="banner">
       <div>
-        <img src="/src/assets/images/onde-corail.svg" alt="onde corail" />
+        <img src="/images/onde-corail.svg" alt="onde corail" />
       </div>
       <div class="sell">
         <p>C'est le moment de vendre</p>
         <PutOfferButton />
       </div>
       <div>
-        <img src="/src/assets/images/feuille-bleue.svg" alt="onde corail" />
+        <img src="/images/feuille-bleue.svg" alt="onde corail" />
       </div>
     </div>
   </section>

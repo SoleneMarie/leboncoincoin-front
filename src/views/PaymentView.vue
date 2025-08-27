@@ -153,7 +153,7 @@ const handlePayment = async () => {
           <img
             :src="
               offer.attributes.pictures?.data?.[0]?.attributes?.url ||
-              '/src/assets/images/placeholder.jpg'
+              '/images/placeholder.jpg'
             "
             alt=""
           />

@@ -148,7 +148,7 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('@/assets/images/illustration.png');
+  background-image: url('/images/illustration.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

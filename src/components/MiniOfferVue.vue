@@ -1,5 +1,4 @@
 <script setup>
-import placeholder from '@/assets/images/placeholder.jpg'
 import axios from 'axios'
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL
@@ -41,7 +40,7 @@ const deleteOffer = async (id) => {
   <div class="offer-wrapper">
     <div class="offer-infos">
       <div class="picture-section">
-        <img :src="picture || placeholder" alt="image de l'annonce" />
+        <img :src="picture || '/images/placeholder.jpg'" alt="image de l'annonce" />
       </div>
       <div class="offer-title">
         <h2>{{ title }}</h2>

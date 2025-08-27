@@ -13,7 +13,7 @@ const searchValue = ref('')
   <header>
     <section class="main">
       <RouterLink to="/" class="image-div">
-        <img src="/src/assets/images/logo.svg" alt="logo leboncoin" />
+        <img src="/images/logo.svg" alt="logo leboncoin" />
       </RouterLink>
       <div class="right-side">
         <div class="actions">
@@ -97,5 +97,4 @@ img {
   width: 75%;
   box-sizing: border-box;
 }
-
 </style>

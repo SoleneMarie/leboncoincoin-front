@@ -60,7 +60,7 @@ const goToPayment = () => {
         />
         <div class="image-container">
           <img
-            :src="currentPicture?.value?.attributes?.url || '/src/assets/images/placeholder.jpg'"
+            :src="currentPicture?.value?.attributes?.url || '/images/placeholder.jpg'"
             alt="image de l'annonce"
           />
         </div>
@@ -80,7 +80,7 @@ const goToPayment = () => {
                 :src="
                   postData.attributes?.owner?.data?.attributes?.avatar?.data?.attributes?.url
                     ? postData.attributes.owner.data.attributes.avatar.data.attributes.url
-                    : '/src/assets/images/default-profile.jpeg'
+                    : '/images/default-profile.jpeg'
                 "
                 alt="avatar"
               />

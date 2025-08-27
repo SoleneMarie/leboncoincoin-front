@@ -17,7 +17,7 @@ defineProps({
               :src="
                 offer.attributes.owner?.data?.attributes?.avatar?.data
                   ? offer.attributes.owner.data.attributes.avatar.data.attributes.url
-                  : '/src/assets/images/default-profile.jpeg'
+                  : '/images/default-profile.jpeg'
               "
               alt="avatar"
               class="avatar"
@@ -31,7 +31,7 @@ defineProps({
               :src="
                 offer.attributes.pictures?.data?.[0]
                   ? offer.attributes.pictures.data[0].attributes.url
-                  : '/src/assets/images/placeholder.jpg'
+                  : '/images/placeholder.jpg'
               "
               alt="offer image"
             />

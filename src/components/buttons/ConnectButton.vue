@@ -62,7 +62,7 @@ watch(
     <RouterLink to="/profile" class="button-link">
       <div class="avatar-container">
         <img
-          :src="userAvatar || Store.userAvatar.value || '/src/assets/images/default-profile.jpeg'"
+          :src="userAvatar || Store.userAvatar.value || '/src//default-profile.jpeg'"
           alt="avatar de l'utilisateur"
         />
       </div>
