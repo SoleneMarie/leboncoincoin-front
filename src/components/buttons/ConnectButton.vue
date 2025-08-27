@@ -1,41 +1,52 @@
 <script setup>
-import { inject, onMounted, watch } from 'vue'
+import axios from 'axios'
+import { inject, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useCookies } from '@/utils/cookiesHandler'
-import { useUser } from '@/utils/userHandler'
 
 const cookies = useCookies()
 const Store = inject('GlobalStore')
 
-const { token, userName, userAvatar, jwt, userId, userLoaded, decodeToken, getUser } =
-  useUser(Store)
+const token = ref(cookies.get('userToken'))
+const userName = ref('')
+const userAvatar = ref('')
+const userLoaded = ref(false)
 
-console.log('valeur du token au montage du composant :', token.value)
+const getUser = async () => {
+  const jwt = token.value || Store.userToken.value || cookies.get('userToken')
 
-onMounted(async () => {
-  if (token.value) {
-    console.log('token : ', token.value)
-    decodeToken(token.value)
-    await getUser()
+  if (!jwt) {
+    console.error('Token manquant dans getUser()')
+    return
   }
-})
+  try {
+    const response = await axios.get(
+      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me?populate=*',
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      },
+    )
+    userName.value = response.data.username
+    userAvatar.value = response.data.avatar?.url
+    Store.userName.value = response.data.username
+    Store.userAvatar.value = response.data.avatar?.url || ''
+  } catch (error) {
+    console.error('Erreur lors de la récupération de l’utilisateur :', error)
+  } finally {
+    userLoaded.value = true
+  }
+}
 
 watch(
   () => cookies.get('userToken'),
   async (newToken) => {
     token.value = newToken
     if (newToken) {
-      userLoaded.value = false
-      decodeToken(newToken)
       await getUser()
     } else {
-      userId.value = ''
-      jwt.value = ''
       userLoaded.value = false
-      userName.value = ''
-      userAvatar.value = ''
-      Store.userName.value = ''
-      Store.userAvatar.value = ''
     }
   },
   { immediate: true }, // Lance immédiatement au premier rendu
@@ -43,43 +54,41 @@ watch(
 </script>
 
 <template>
-  <div v-if="userLoaded && token">
-    <RouterLink :to="{ name: 'profile' }" class="button-link">
-      <div class="profile">
-        <div class="avatar-container">
-          <img
-            v-if="userAvatar || Store.userAvatar"
-            :src="userAvatar || Store.userAvatar"
-            alt="avatar de l'utilisateur"
-          />
-          <p v-else class="letter-avatar">{{ (userName || '').charAt(0).toUpperCase() }}</p>
-        </div>
-        <h4>{{ userName || Store.userName }}</h4>
+  <RouterLink to="/login" class="button-link" v-if="!token && !Store.userToken.value">
+    <font-awesome-icon :icon="['fas', 'user']" />
+    <p>Se connecter</p>
+  </RouterLink>
+
+  <div class="wrapper" v-else>
+    <RouterLink to="/profile" class="button-link">
+      <div class="avatar-container">
+        <img
+          :src="userAvatar || Store.userAvatar.value || '/src/assets/images/default-profile.jpeg'"
+          alt="avatar de l'utilisateur"
+        />
       </div>
+      <h4>{{ userName || Store.userName.value }}</h4>
     </RouterLink>
   </div>
-  <RouterLink to="/login" class="button-link" v-else>
-    <font-awesome-icon :icon="['fas', 'user']" />
-    <p class="connect">Se connecter</p>
-  </RouterLink>
 </template>
 
 <style scoped>
 .button-link {
   display: flex;
-  padding: 8px;
+  padding: 10px 8px;
   border-radius: 10px;
   white-space: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   background-color: white;
   border: solid 1px #eadfdb;
-  width: 100px;
+  width: 110px;
   cursor: pointer;
 }
 
 .button-link p {
+  font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -88,42 +97,23 @@ watch(
 }
 
 .button-link svg {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 h4 {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.connect {
-  font-size: 12px;
-}
-
-.profile {
-  height: 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
+.wrapper {
+  position: relative;
+  display: inline-block;
 }
 
 .avatar-container {
-  height: 28px;
-  width: 28px;
+  height: 34px;
+  width: 34px;
   border-radius: 50%;
-  background-color: #566e82;
-}
-
-.letter-avatar {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  color: white;
 }
 
 img {

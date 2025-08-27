@@ -70,6 +70,8 @@ const handleSubmit = async () => {
     const avatarUrl = userDetails?.data?.avatar?.url || null
     Store.userAvatar.value = avatarUrl
 
+    console.log ("store au moment du login :")
+
     router.push(route.query.redirect || '/')
   } catch (error) {
     console.error('Erreur lors de la connexion :', error)
