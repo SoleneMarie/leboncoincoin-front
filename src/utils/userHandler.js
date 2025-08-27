@@ -16,6 +16,8 @@ export function useUser(store) {
   const userMail = ref('')
   const userLoaded = ref(false)
 
+  const baseUrl = import.meta.env.VITE_BACKEND_URL
+
   const decodeToken = (rawToken) => {
     try {
       const payload = jwtDecode(rawToken)
@@ -35,10 +37,9 @@ export function useUser(store) {
     }
 
     try {
-      const response = await axios.get(
-        'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me?populate=*',
-        { headers: { Authorization: `Bearer ${raw}` } },
-      )
+      const response = await axios.get(`${baseUrl}/users/me?populate=*`, {
+        headers: { Authorization: `Bearer ${raw}` },
+      })
       jwt.value = raw
 
       userName.value = response.data.username

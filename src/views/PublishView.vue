@@ -8,6 +8,8 @@ import { useRouter } from 'vue-router'
 const cookies = useCookies()
 const router = useRouter()
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL
+
 const pictures = ref([])
 const title = ref('')
 const description = ref('')
@@ -58,16 +60,12 @@ const handleSubmit = async () => {
   formData.append('data', stringifiedInfos)
 
   try {
-    const response = await axios.post(
-      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers?populate=*',
-      formData,
-      {
-        headers: {
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'multipart/form-data',
-        },
+    const response = await axios.post(`${baseUrl}/offers?populate=*`, formData, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data',
       },
-    )
+    })
     const offerId = response.data.data.id
     isPublishing.value = false
     router.push({ name: 'offer', params: { id: offerId } })
@@ -117,7 +115,7 @@ onMounted(async () => {
   }
 
   try {
-    await axios.get('https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me', {
+    await axios.get(`${baseUrl}/users/me`, {
       headers: {
         Authorization: 'Bearer ' + token,
       },

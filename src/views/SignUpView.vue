@@ -18,6 +18,8 @@ const router = useRouter()
 const route = useRoute()
 const cookies = useCookies()
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL
+
 const Store = inject('GlobalStore')
 if (!Store) {
   throw new Error('GlobalStore n’a pas été injecté correctement')
@@ -42,15 +44,11 @@ const handleSubmit = async () => {
 
   try {
     connecting.value = true
-    const response = await axios.post(
-      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/auth/local/register',
-      body,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const response = await axios.post(`${baseUrl}/auth/local/register`, body, {
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+    })
 
     Store.userToken.value = response.data.jwt
     Store.userName.value = response.data.user.username

@@ -14,13 +14,15 @@ const postData = ref([])
 const pictures = ref([])
 const isLoading = ref(true)
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL
+
 const currentPicture = ref(null)
 let cycle = null
 
 onMounted(async () => {
   try {
     const { data } = await axios.get(
-      `https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers/${id}?populate[pictures]=*&populate[owner][populate]=avatar`,
+      `${baseUrl}/offers/${id}?populate[pictures]=*&populate[owner][populate]=avatar`,
     )
     postData.value = data.data
     pictures.value = data.data.attributes?.pictures?.data || []

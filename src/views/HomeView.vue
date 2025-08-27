@@ -27,7 +27,7 @@ watchEffect(async () => {
   const maxPrice = route.query.maxPrice
   const sort = route.query.sort
 
-  const baseUrl = 'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers'
+  const baseUrl = import.meta.env.VITE_BACKEND_URL
   const params = new URLSearchParams()
 
   params.append('pagination[page]', page)
@@ -40,7 +40,7 @@ watchEffect(async () => {
   if (sort && sort !== 'none') params.append('sort', sort)
 
   try {
-    const { data } = await axios.get(`${baseUrl}?${params.toString()}`)
+    const { data } = await axios.get(`${baseUrl}/offers?${params.toString()}`)
     offers.value = data.data
     totalPages.value = data.meta.pagination.pageCount
   } catch (error) {

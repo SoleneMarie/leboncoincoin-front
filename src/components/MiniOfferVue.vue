@@ -2,6 +2,8 @@
 import placeholder from '@/assets/images/placeholder.jpg'
 import axios from 'axios'
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL
+
 const props = defineProps({
   offer: {
     type: Object,
@@ -23,7 +25,7 @@ const userToken = props.token
 
 const deleteOffer = async (id) => {
   try {
-    await axios.delete(`https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers/${id}`, {
+    await axios.delete(`${baseUrl}/offers/${id}`, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },

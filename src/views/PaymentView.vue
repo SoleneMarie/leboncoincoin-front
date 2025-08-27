@@ -5,6 +5,7 @@ import axios from 'axios'
 import { loadStripe } from '@stripe/stripe-js'
 import { useCookies } from '@/utils/cookiesHandler'
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL
 const publicKey =
   'pk_test_51PuwocP7EWGvkP3C94fKlYJgPsKBh6deCHlhGWCpxNlYQQCBiye71vX1ocfBhHifKmoELR0kjHYLVgsdPN2pzCQv00QYzgpghj'
 const stripePromise = loadStripe(publicKey)
@@ -44,9 +45,7 @@ onMounted(async () => {
     return
   }
 
-  const { data } = await axios.get(
-    `https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers/${id}?populate=*`,
-  )
+  const { data } = await axios.get(`${baseUrl}/offers/${id}?populate=*`)
   offer.value = data.data
 
   stripe.value = await stripePromise
@@ -74,14 +73,11 @@ const handlePayment = async () => {
   const totalAmount = offer.value.attributes.price + deliveryFees + protectionFees
 
   try {
-    const response = await axios.post(
-      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers/buy',
-      {
-        title: offer.value.attributes.title,
-        amount: totalAmount,
-        token: token.id,
-      },
-    )
+    const response = await axios.post(`${baseUrl}/offers/buy`, {
+      title: offer.value.attributes.title,
+      amount: totalAmount,
+      token: token.id,
+    })
 
     if (response.data.status === 'succeeded') {
       router.push('/success')

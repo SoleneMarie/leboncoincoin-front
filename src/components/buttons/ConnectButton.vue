@@ -4,6 +4,8 @@ import { inject, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useCookies } from '@/utils/cookiesHandler'
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL
+
 const cookies = useCookies()
 const Store = inject('GlobalStore')
 
@@ -20,14 +22,11 @@ const getUser = async () => {
     return
   }
   try {
-    const response = await axios.get(
-      'https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/me?populate=*',
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
+    const response = await axios.get(`${baseUrl}/users/me?populate=*`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
       },
-    )
+    })
     userName.value = response.data.username
     userAvatar.value = response.data.avatar?.url
     Store.userName.value = response.data.username

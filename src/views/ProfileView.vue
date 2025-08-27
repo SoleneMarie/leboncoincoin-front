@@ -9,6 +9,8 @@ const Store = inject('GlobalStore')
 const { token, userName, userAvatar, jwt, userId, userLoaded, userMail, getUser, handleLogout } =
   useUser(Store)
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL
+
 const avatar = ref(null)
 const loading = ref(false)
 const error = ref(null)
@@ -23,7 +25,7 @@ const getUserOffers = async () => {
   if (!userId.value) return
   try {
     const response = await axios.get(
-      `https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/offers?filters[owner][id][$eq]=${userId.value}&populate=owner&populate=pictures`,
+      `${baseUrl}/offers?filters[owner][id][$eq]=${userId.value}&populate=owner&populate=pictures`,
       {
         headers: {
           Authorization: `Bearer ${jwt.value}`,
@@ -65,16 +67,12 @@ const onAvatarChange = async (e) => {
 
   loading.value = true
   try {
-    await axios.put(
-      `https://site--leboncoincoin--dk2vmt6fnyjp.code.run/api/users/${userId.value}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt.value}`,
-          'Content-Type': 'multipart/form-data',
-        },
+    await axios.put(`${baseUrl}/users/${userId.value}`, formData, {
+      headers: {
+        Authorization: `Bearer ${jwt.value}`,
+        'Content-Type': 'multipart/form-data',
       },
-    )
+    })
     await getUser()
   } catch (error) {
     error.value = "Erreur lors de la mise à jour de l'avatar"
